@@ -12,16 +12,13 @@ const throwError = (error) => {
 const MAPPERS_INFO = createSymbol('mappersInfo');
 const OBSERVABLES = createSymbol('observables');
 
-const createComponentFromMappers = (mappers, BaseComponent) => {
-  const factory = createEagerFactory(BaseComponent);
-
-  return class extends Component {
-    static [MAPPERS_INFO] = {mappers, BaseComponent};
+const createComponentFromMappers = (mappers, childFactory) =>
+  class extends Component {
+    static [MAPPERS_INFO] = {mappers, childFactory};
     static contextTypes = {[OBSERVABLES]: PropTypes.object};
     static childContextTypes = {[OBSERVABLES]: PropTypes.object};
 
     props$ = new BehaviorSubject(this.props);
-    state = {props: {}};
 
     getChildContext() {
       return this.childContext;
@@ -29,21 +26,21 @@ const createComponentFromMappers = (mappers, BaseComponent) => {
 
     componentWillMount() {
       const {
-        props$: nextProps$,
+        props$: childProps$,
         ...childObservables
       } = mappers.reduce(
-        (result, provider) => ({
+        (observables, mapper) => ({
           props$: this.props$,
-          ...provider(result),
+          ...mapper(observables),
         }),
         {
-          ...this.context.observables,
+          ...this.context[OBSERVABLES],
           props$: this.props$,
         },
       );
 
-      this.subscription = nextProps$.subscribe({
-        next: props => this.setState({props}),
+      this.subscription = childProps$.subscribe({
+        next: childProps => this.setState({childProps}),
         error: throwError,
       });
 
@@ -59,22 +56,29 @@ const createComponentFromMappers = (mappers, BaseComponent) => {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-      return this.state.props !== nextState.props;
+      return this.state
+        && this.state.childProps !== nextState.childProps;
     }
 
     render() {
-      return factory(this.state.props);
+      if (!this.state) {
+        return null;
+      }
+
+      return this.constructor[MAPPERS_INFO].childFactory(this.state.childProps);
     }
   };
-};
 
 export default createHelper(mapper => (BaseComponent) => {
   if (BaseComponent[MAPPERS_INFO]) {
     return createComponentFromMappers(
       [mapper, ...BaseComponent[MAPPERS_INFO].mappers],
-      BaseComponent[MAPPERS_INFO].BaseComponent,
+      BaseComponent[MAPPERS_INFO].childFactory,
     );
   }
 
-  return createComponentFromMappers([mapper], BaseComponent);
+  return createComponentFromMappers(
+    [mapper],
+    createEagerFactory(BaseComponent),
+  );
 }, 'mapObs');
