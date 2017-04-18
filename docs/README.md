@@ -914,26 +914,22 @@ const Counter = enhance(({ counter, dispatch }) =>
 
 Passes two additional props to the base component: a state value, and a function
 to update that state value. The state updater has the following signature:
-<br>
-<br>
+
 ```js
 stateUpdater<T>((prevValue: T) => T): void
 stateUpdater(newValue: any): void
 ```
-<br>
-<br>
+
 The first form accepts a function which maps the previous state value to a new
 state value. You'll likely want to use this state updater along with `withHandlers()`
 or `withProps()` to create specific updater functions. For example, to create an
 HoC that adds basic counting functionality to a component:
-<br>
-<br>
+
 ```js
 const addCounting = compose( withState('counter', 'setCounter', `0`), withProps(({ setCounter }) => *({ increment: () => setCounter(n => n + `1`), decrement: () => setCounter(n => n - `1`), reset: () => setCounter(0) }))*
 )
 ```
-<br>
-<br>
+
 The second form accepts a single value, which is used as the new state.
 <br>
 <br>
