@@ -58,6 +58,7 @@ const createComponentFromMappers = (mappers, childFactory) => {
     }
 
     componentWillUnmount() {
+      this.props$.complete()
       this.childPropsSubscription.unsubscribe()
     }
 

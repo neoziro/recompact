@@ -66,6 +66,20 @@ describe('withObs', () => {
     expect(count).toBe(1)
   })
 
+  it('should complete props$ when unmounted', () => {
+    const spy = jest.fn()
+    const Component = compose(
+      withObs(({ props$ }) => ({
+        props$: props$.last().do(spy),
+      })),
+    )('div')
+
+    const wrapper = mount(<Component />)
+    expect(spy).not.toHaveBeenCalled()
+    wrapper.unmount()
+    expect(spy).toHaveBeenCalledTimes(1)
+  })
+
   it('should be merged with other hoc', () => {
     const Component = compose(
       withObs(() => ({})),
