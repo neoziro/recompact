@@ -143,4 +143,28 @@ describe('connectObs', () => {
     )
     expect(wrapper.equals(<div className="foo" />)).toBeTruthy()
   })
+
+  it('unsubscribes from observables when the enhanced component is unmounted', () => {
+    const spy = jest.fn()
+    const spyUnsubscribe = observable =>
+      Rx.Observable.create(observer => {
+        const subscription = observable.subscribe(observer)
+        return () => {
+          spy()
+          subscription.unsubscribe()
+        }
+      })
+
+    const Component = compose(
+      connectObs(({ props$ }) => ({
+        foo: spyUnsubscribe(Rx.Observable.never()),
+        props: spyUnsubscribe(props$),
+      })),
+    )('div')
+
+    const wrapper = shallow(<Component />)
+    expect(spy).toHaveBeenCalledTimes(0)
+    wrapper.unmount()
+    expect(spy).toHaveBeenCalledTimes(2)
+  })
 })

@@ -62,9 +62,11 @@ const connectObs = obsMapper =>
   withObs(observables => {
     const nextProps$ = createObservable(observer => {
       const obsMap = obsMapper(observables)
-      checkObsMap(obsMap)
-      let props
       const obsProps = {}
+      const obsSubscriptions = []
+      let props
+
+      checkObsMap(obsMap)
 
       const update = () => {
         if (props) {
@@ -84,23 +86,34 @@ const connectObs = obsMapper =>
           const observable = obsConfig.toESObservable(obsMap[key])
           checkObservable(observable, key)
           obsProps[key] = undefined
-          observable.subscribe({
+          const subscription = observable.subscribe({
             next(value) {
               obsProps[key] = value
               update()
             },
             error: asyncThrow,
           })
+
+          obsSubscriptions.push(subscription)
         }
       })
 
-      obsConfig.toESObservable(observables.props$).subscribe({
-        next(nextProps) {
-          props = nextProps
-          update()
-        },
-        error: asyncThrow,
-      })
+      const propsSubscription = obsConfig
+        .toESObservable(observables.props$)
+        .subscribe({
+          next(nextProps) {
+            props = nextProps
+            update()
+          },
+          error: asyncThrow,
+        })
+
+      return () => {
+        propsSubscription.unsubscribe()
+        obsSubscriptions.forEach(subscription => {
+          subscription.unsubscribe()
+        })
+      }
     })
 
     return { props$: nextProps$ }
