@@ -25,13 +25,14 @@ import updateProps from './utils/updateProps'
  * const withEmptyProp = withPropsOnChange('count', ({count}) => ({empty: count === 0}));
  */
 const withPropsOnChange = (shouldMapOrKeys, propsMapper) => {
-  const shouldMap = typeof shouldMapOrKeys === 'function'
-    ? shouldMapOrKeys
-    : (props, nextProps) =>
-        !shallowEqual(
-          pick(props, shouldMapOrKeys),
-          pick(nextProps, shouldMapOrKeys),
-        )
+  const shouldMap =
+    typeof shouldMapOrKeys === 'function'
+      ? shouldMapOrKeys
+      : (props, nextProps) =>
+          !shallowEqual(
+            pick(props, shouldMapOrKeys),
+            pick(nextProps, shouldMapOrKeys),
+          )
 
   return createCompactableHOC(
     updateProps(next => {

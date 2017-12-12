@@ -10,9 +10,10 @@ const readmePath = path.join(docPath, 'README.md')
 
 const pkg = require('../package.json')
 
-const version = pkg.version
+const { version } = pkg
 
-const modules = fs.readdirSync(srcPath)
+const modules = fs
+  .readdirSync(srcPath)
   .filter(file => file.match(/\.js$/) && !file.match('index.js'))
   .map(file => file.replace('.js', ''))
 
@@ -36,12 +37,14 @@ const config = {
  * @returns {string} Returns the processed markdown.
  */
 function postprocess(markdown) {
-  return markdown
-    // Wrap symbol property identifiers in brackets.
-    .replace(/\.(Symbol\.(?:[a-z]+[A-Z]?)+)/g, '[$1]')
-    // Remove br
-    .replace(/\n<br>/g, '')
-    .replace(/(<\/h3>)/g, '$1\n')
+  return (
+    markdown
+      // Wrap symbol property identifiers in brackets.
+      .replace(/\.(Symbol\.(?:[a-z]+[A-Z]?)+)/g, '[$1]')
+      // Remove br
+      .replace(/\n<br>/g, '')
+      .replace(/(<\/h3>)/g, '$1\n')
+  )
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,7 +56,7 @@ function postprocess(markdown) {
  */
 function build() {
   const markdown = docdown(config)
-  fs.writeFile(readmePath, postprocess(markdown), (error) => {
+  fs.writeFile(readmePath, postprocess(markdown), error => {
     if (error) {
       throw error
     }

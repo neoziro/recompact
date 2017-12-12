@@ -11,13 +11,13 @@ describe('branch', () => {
         withProps({ name: 'Heisenberg' }),
         withProps({ name: 'Walter' }),
       ),
-    )(({ isBad, name, updateIsBad }) =>
+    )(({ isBad, name, updateIsBad }) => (
       <div>
         <div className="isBad">{isBad ? 'true' : 'false'}</div>
         <div className="name">{name}</div>
         <button onClick={() => updateIsBad(b => !b)}>Toggle</button>
-      </div>,
-    )
+      </div>
+    ))
 
     const wrapper = mount(<SayMyName />)
     const getIsBad = () => wrapper.find('.isBad').text()

@@ -9,16 +9,18 @@ const updateProps = subscriber =>
         next: subscriber(value => {
           observer.next(value)
         }),
-        error: typeof observer.error === 'function'
-          ? error => {
-              observer.error(error)
-            }
-          : undefined,
-        complete: typeof observer.complete === 'function'
-          ? value => {
-              observer.complete(value)
-            }
-          : undefined,
+        error:
+          typeof observer.error === 'function'
+            ? error => {
+                observer.error(error)
+              }
+            : undefined,
+        complete:
+          typeof observer.complete === 'function'
+            ? value => {
+                observer.complete(value)
+              }
+            : undefined,
       }),
     ),
     obs,

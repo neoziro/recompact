@@ -64,8 +64,9 @@ test('toClass passes context and props correctly', () => {
     withContext({ store: PropTypes.object }, props => ({ store: props.store })),
   )(Provider)
 
-  const StatelessComponent = (props, context) =>
+  const StatelessComponent = (props, context) => (
     <Dummy props={props} context={context} />
+  )
 
   StatelessComponent.contextTypes = { store: PropTypes.object }
 

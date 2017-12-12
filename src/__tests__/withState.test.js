@@ -70,13 +70,13 @@ describe('withState', () => {
     const { updateCounter } = dummy.props()
 
     /* eslint-disable no-console */
-    const error = console.error
+    const originalError = console.error
     try {
       console.error = jest.fn()
       updateCounter(1, () => {})
       expect(console.error).toBeCalled()
     } finally {
-      console.error = error
+      console.error = originalError
     }
     /* eslint-enable no-console */
   })

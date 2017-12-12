@@ -64,7 +64,7 @@ describe('withHandlers', () => {
 
   it('throws if handler is not a higher-order function', () => {
     /* eslint-disable no-console */
-    const error = console.error
+    const originalError = console.error
     console.error = jest.fn()
 
     const EnhancedDummy = withHandlers({
@@ -80,7 +80,7 @@ describe('withHandlers', () => {
         'Refer to the docs for more info.',
     )
 
-    console.error = error
+    console.error = originalError
     /* eslint-enable no-console */
   })
 
@@ -114,12 +114,12 @@ describe('withHandlers', () => {
       return null
     })
 
-    const wrapper = mount(<Component hello={'foo'} />)
+    const wrapper = mount(<Component hello="foo" />)
     wrapper.setProps({ hello: 'bar' })
     expect(componentHandlers[0]).toBe(componentHandlers[1])
 
     // check that cache is not shared
-    mount(<Component2 hello={'foo'} />)
+    mount(<Component2 hello="foo" />)
     expect(componentHandlers[0]).toEqual(componentHandlers2[0])
     expect(componentHandlers[0]).not.toBe(componentHandlers2[0])
   })

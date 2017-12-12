@@ -6,9 +6,10 @@ import RecomposeCounter from './RecomposeCounter'
 const main = document.createElement('div')
 document.body.appendChild(main)
 
-ReactDOM.render((
+ReactDOM.render(
   <div>
     <RecompactCounter />
     <RecomposeCounter />
-  </div>
-), main)
+  </div>,
+  main,
+)

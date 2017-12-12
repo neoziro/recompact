@@ -14,7 +14,9 @@ import connectObs from './connectObs'
 const pluckObs = (...observableNames) =>
   connectObs(observables =>
     Object.assign(
-      ...observableNames.map(observableName => ({ [observableName.replace(/\$$/, '')]: observables[observableName] })),
+      ...observableNames.map(observableName => ({
+        [observableName.replace(/\$$/, '')]: observables[observableName],
+      })),
     ),
   )
 

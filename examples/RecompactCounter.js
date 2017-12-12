@@ -1,5 +1,12 @@
 import React from 'react'
-import { setDisplayName, compose, pure, withState, renameProp, withHandlers } from '../src'
+import {
+  setDisplayName,
+  compose,
+  pure,
+  withState,
+  renameProp,
+  withHandlers,
+} from '../src'
 
 export default compose(
   setDisplayName('RecompactCounter'),
@@ -9,6 +16,4 @@ export default compose(
   withHandlers({
     onIncrement: ({ count, onChange }) => () => onChange(count + 1),
   }),
-)(({ onIncrement, count }) => (
-  <button onClick={onIncrement}>{count}</button>
-))
+)(({ onIncrement, count }) => <button onClick={onIncrement}>{count}</button>)

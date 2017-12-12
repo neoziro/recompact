@@ -4,8 +4,9 @@ import { createEagerFactory } from '../'
 
 describe('createEagerFactory', () => {
   it('should create an element', () => {
-    const Component = ({ children, className }) =>
+    const Component = ({ children, className }) => (
       <div className={className}>{children}</div>
+    )
     Component.defaultProps = { className: 'foo' }
     const element = createEagerFactory(Component)({ className: 'bar' }, 'hello')
     expect(element.type).toBe(Component)
@@ -14,8 +15,9 @@ describe('createEagerFactory', () => {
   })
 
   it('should just call function if possible', () => {
-    const Component = ({ children, className }) =>
+    const Component = ({ children, className }) => (
       <div className={className}>{children}</div>
+    )
     const element = createEagerFactory(Component)({ className: 'bar' }, 'hello')
     expect(element.type).toBe('div')
     expect(element.props.className).toBe('bar')
