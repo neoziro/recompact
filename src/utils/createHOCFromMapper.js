@@ -8,6 +8,7 @@ import { getConfig } from '../setConfig'
 import { config as obsConfig } from '../setObservableConfig'
 
 const MAPPERS_INFO = createSymbol('mappersInfo')
+export { MAPPERS_INFO as mappersInfoSymbol }
 const observablePropType = () => {}
 
 const createComponentFromMappers = (mappers, childFactory) => {
