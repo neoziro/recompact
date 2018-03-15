@@ -303,6 +303,7 @@ A higher-order component that permits to hook a lifecycle method. Available meth
 * componentWillUpdate
 * componentDidUpdate
 * componentWillUnmount
+
 You should use this helper as an escape hatch, in
 case you need to access component lifecycle methods.
 
