@@ -8,7 +8,7 @@
  * @returns {HigherOrderComponent} A function that takes a component and returns a new component.
  * @example
  *
- * setStatic({defaultProps: {type: 'button'}})('button');
+ * setStatic('defaultProps', { type: 'button' })('button');
  */
 const setStatic = (key, value) => BaseComponent => {
   /* eslint-disable no-param-reassign */
