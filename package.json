@@ -47,7 +47,7 @@
     "recompose"
   ],
   "peerDependencies": {
-    "react": "^15.0.0 || ^16.0.0"
+    "react": "^15.0.0 || ^16.3.0"
   },
   "dependencies": {
     "fbjs": "^0.8.16",

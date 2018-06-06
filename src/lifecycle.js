@@ -3,13 +3,19 @@ import createEagerFactory from './createEagerFactory'
 import createHelper from './createHelper'
 
 const LIFECYCLE_METHODS = [
+  'getDerivedStateFromProps',
   'componentWillMount',
+  'UNSAFE_componentWillMount',
   'componentDidMount',
+  'UNSAFE_componentWillReceiveProps',
   'componentWillReceiveProps',
   'shouldComponentUpdate',
   'componentWillUpdate',
+  'UNSAFE_componentWillUpdate',
+  'getSnapshotBeforeUpdate',
   'componentDidUpdate',
   'componentWillUnmount',
+  'componentDidCatch'
 ]
 
 /**
