@@ -85,7 +85,7 @@
     "jest": "^21.2.1",
     "jsdom": "^11.5.1",
     "marky-markdown": "^11.3.2",
-    "microtime": "^2.1.6",
+    "microtime": "^2.1.8",
     "prettier": "^1.9.2",
     "prop-types": "^15.6.0",
     "raf": "^3.4.0",
